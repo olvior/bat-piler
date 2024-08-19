@@ -167,6 +167,7 @@ INBUILT_FUNCTIONS = {
 }
 
 if_stack: list[str] = []
+halted = False
 
 def main():
     argv = sys.argv
@@ -188,6 +189,8 @@ def main():
 
 
 def interpret_line(line, line_number):
+    global halted
+
     line = line.strip()
     line_by_spaces = line.split()
 
@@ -221,8 +224,13 @@ def interpret_line(line, line_number):
     elif start == "return":
         fio.append_to_out("RET")
 
+    elif start == "HLT" or start == "halt":
+        fio.append_to_out("HLT")
+        halted = True
+
 
 
 main()
 
-fio.append_to_out("HLT")
+if not halted:
+    fio.append_to_out("HLT")
