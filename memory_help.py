@@ -12,10 +12,6 @@ def allocate_register():
 def free_register(register: int):
     free_registers_list.append(register)
 
-def set_reg_imm(reg: int, value):
-    text = f"LDI r{reg} {value}"
-    fio.append_to_out(text)
-
 
 def allocate_memory():
     free_memory_addr = free_memory_list.pop()
@@ -43,4 +39,7 @@ def move_addr_to_reg(addr: int, reg: int):
 
     fio.append_to_out(text)
 
+def set_reg_imm(reg: int, value):
+    text = f"LDI r{reg} {value}"
+    fio.append_to_out(text)
 

@@ -74,20 +74,12 @@ def deal_with_if(args, line_number):
     if_stack.append(if_name)
 
     parts = args[1::]
-    part_types = []
-    for part in parts:
-        part_types.append(parsing_helper.get_exp_type(part))
     
     regs = [mh.allocate_register(), mh.allocate_register()]
-
-    for idx, reg_temp in enumerate(regs):
-        if part_types[idx * 2] == parsing_helper.Exp.LITERAL:
-            mh.set_reg_imm(reg_temp, int(parts[idx * 2]))
-        
-        elif part_types[idx * 2] == parsing_helper.Exp.VARIABLE:
-            var = mh.variables_dict[parts[idx * 2]]
-            mh.move_addr_to_reg(var.memory_addr, reg_temp)
-
+   
+    move_unknown_to_reg(parts[0], regs[0])
+    move_unknown_to_reg(parts[2], regs[1])
+    
     comparison = parts[1]
     
     fio.append_to_out(f"CMP r{regs[0]} r{regs[1]}")
@@ -119,6 +111,14 @@ def deal_with_out_to_number(args):
     var.undo_reference()
 
 
+def move_unknown_to_reg(unknown, reg):
+    value_type = parsing_helper.get_exp_type(unknown)
+    if value_type == parsing_helper.Exp.LITERAL:
+        mh.set_reg_imm(reg, int(unknown))
+    else:
+        mh.move_addr_to_reg(mh.variables_dict[unknown].memory_addr, reg)
+        
+
 def evaluate_exp_to_reg(exp, reg):
     parts = exp
     part_types = []
@@ -126,15 +126,10 @@ def evaluate_exp_to_reg(exp, reg):
         part_types.append(parsing_helper.get_exp_type(part))
     
     regs = [mh.allocate_register(), mh.allocate_register()]
-
-    for idx, reg_temp in enumerate(regs):
-        if part_types[idx * 2] == parsing_helper.Exp.LITERAL:
-            mh.set_reg_imm(reg_temp, int(parts[idx * 2]))
-        
-        elif part_types[idx * 2] == parsing_helper.Exp.VARIABLE:
-            var = mh.variables_dict[parts[idx * 2]]
-            mh.move_addr_to_reg(var.memory_addr, reg_temp)
-
+   
+    move_unknown_to_reg(parts[0], regs[0])
+    move_unknown_to_reg(parts[2], regs[1])
+    
     modifier = parts[1]
     MODIFIERS_DICT[modifier](regs[0], regs[1], reg)
 
