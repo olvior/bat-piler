@@ -215,6 +215,12 @@ def interpret_line(line, line_number):
     elif start == "goto":
         fio.append_to_out(f"JMP {line_by_spaces[1]}")
 
+    elif start == "call":
+        fio.append_to_out(f"CALL {line_by_spaces[1]}")
+
+    elif start == "return":
+        fio.append_to_out("RET")
+
 
 
 main()
