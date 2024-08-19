@@ -1,5 +1,8 @@
 import file_io as fio
 
+class Ports():
+    SHOW_NUMBER = 250
+
 free_registers_list = list(range(15, 0, -1)) # regs 15, 14, 13 .. 1
 free_memory_list = list(range(239, -1, -1)) # addresses 239, 238 .. 0
 

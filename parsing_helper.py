@@ -7,8 +7,6 @@ class Exp(Enum):
     COMPARISON = 3
     IF_KEY_WORD = 4
 
-class Ports():
-    SHOW_NUMBER = 250
 
 MODIFIERS = ['+', '-']
 COMPARISONS = ['==', '!=', '>=', '<']

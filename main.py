@@ -101,13 +101,13 @@ def deal_with_out_to_number(args):
     if parsing_helper.is_literal(args[1]):
         reg = mh.allocate_register()
         mh.set_reg_imm(reg, int(args[1]))
-        mh.move_reg_to_addr(reg, parsing_helper.Ports.SHOW_NUMBER)
+        mh.move_reg_to_addr(reg, mh.Ports.SHOW_NUMBER)
         mh.free_register(reg)
         return
 
     var = mh.variables_dict[args[1]]
     var.reference()
-    mh.move_reg_to_addr(var.register, parsing_helper.Ports.SHOW_NUMBER)
+    mh.move_reg_to_addr(var.register, mh.Ports.SHOW_NUMBER)
     var.undo_reference()
 
 
