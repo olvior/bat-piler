@@ -1,7 +1,29 @@
 import file_io as fio
 
 class Ports():
-    SHOW_NUMBER = 250
+    ports = {
+        "SCREEN_SET_PIXEL_X": 240,
+        "SCREEN_SET_PIXEL_Y": 241,
+        "SCREEN_DRAW_PIXEL": 242,
+        "SCREEN_CLEAR_PIXEL": 243,
+        "SCREEN_LOAD_PIXEL": 244,
+        "SCREEN_PUSH": 245,
+        "SCREEN_CLEAR": 246,
+
+        "CHAR_WRITE": 247,
+        "CHAR_PUSH": 248,
+        "CHAR_CLEAR": 249,
+
+        "NUMBER_SHOW": 250,
+        "NUMBER_CLEAR": 251,
+        "NUMBER_SET_SIGNED": 252,
+        "NUMBER_SET_UNSIGNED": 253,
+
+        "LOAD_RNG": 254,
+        "LOAD_CONTROLER": 255,
+    }
+
+
 
 free_registers_list = list(range(15, 0, -1)) # regs 15, 14, 13 .. 1
 free_memory_list = list(range(239, -1, -1)) # addresses 239, 238 .. 0

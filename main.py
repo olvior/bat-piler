@@ -97,18 +97,31 @@ MODIFIERS_DICT = {
 }
 
 
-def deal_with_out_to_number(args):
-    if parsing_helper.is_literal(args[1]):
-        reg = mh.allocate_register()
-        mh.set_reg_imm(reg, int(args[1]))
-        mh.move_reg_to_addr(reg, mh.Ports.SHOW_NUMBER)
-        mh.free_register(reg)
-        return
+def deal_with_output(args):
+    port = args[1]
 
-    var = mh.variables_dict[args[1]]
-    var.reference()
-    mh.move_reg_to_addr(var.register, mh.Ports.SHOW_NUMBER)
-    var.undo_reference()
+    if not port in mh.Ports.ports.keys():
+        print(f"Port {port} not found") 
+        raise ValueError
+
+    reg = mh.allocate_register()
+    move_unknown_to_reg(args[2], reg)
+    mh.move_reg_to_addr(reg, mh.Ports.ports[port])
+    mh.free_register(reg)
+
+def deal_with_input(args):
+    port = args[1]
+
+    if not port in mh.Ports.ports.keys():
+        print(f"Port {port} not found") 
+        raise ValueError
+
+    var: Variable = mh.variables_dict[args[2]]
+    
+    reg = mh.allocate_register()
+    mh.move_addr_to_reg(mh.Ports.ports[port], reg)
+    mh.move_reg_to_addr(reg, var.memory_addr)
+    mh.free_register(reg)
 
 
 def move_unknown_to_reg(unknown, reg):
@@ -147,8 +160,10 @@ KEYWORD_LIST = {
     "set": deal_with_set,
     "var": deal_with_var,
 }
+
 INBUILT_FUNCTIONS = {
-    "out_to_number": deal_with_out_to_number,
+    "output": deal_with_output,
+    "input": deal_with_input,
 }
 
 if_stack: list[str] = []
