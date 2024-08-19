@@ -27,6 +27,13 @@ class Variable():
         mh.free_register(self.register)
         self.register = 0
 
+    def kill(self):
+        mh.free_memory(self.memory_addr)
+        mh.variables_dict.pop(self.name)
+
+def free_variable(args):
+    var = mh.variables_dict[args[1]]
+    var.kill()
 
 def deal_with_set(args):
     variable_str = args[1]
@@ -159,6 +166,7 @@ COMPARISON_DICT = {
 KEYWORD_LIST = {
     "set": deal_with_set,
     "var": deal_with_var,
+    "free": free_variable,
 }
 
 INBUILT_FUNCTIONS = {
