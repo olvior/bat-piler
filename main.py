@@ -183,6 +183,9 @@ def append_halt(args):
     fio.append_to_out("HLT")
     halted = True
 
+def append_return(args):
+    fio.append_to_out("RET")
+
 COMPARISON_DICT = {
     "==": "0",
     "!=": "1",
@@ -196,6 +199,7 @@ KEYWORD_LIST = {
     "free": free_variable,
     "halt": append_halt,
     "HLT": append_halt,
+    "return": append_return,
 }
 
 INBUILT_FUNCTIONS = {
@@ -260,10 +264,6 @@ def interpret_line(line, line_number):
 
     elif start == "call":
         fio.append_to_out(f"CAL {line_by_spaces[1]}")
-
-    elif start == "return":
-        fio.append_to_out("RET")
-
 
 
 
