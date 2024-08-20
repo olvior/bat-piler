@@ -3,19 +3,20 @@ from typing import List, Dict, Callable
 import file_io
 import memory
 from exceptions import InternalCompilerError
-from parser.expression_loader import ExpressionLoader
-from parser.parser_utils import move_unknown_to_register, is_immediate
+from memory import Register, Port
+from parser_stuff.expression_loader import ExpressionLoader
+from parser_stuff.parser_utils import move_unknown_to_register, is_immediate
 from variable import active_variables, Variable
 
 
 def deal_with_output(line_segments: List[str]) -> None:
     port_name = line_segments[0]
-    port = memory.Port.get_port(port_name)
+    port = Port.get_port(port_name)
 
-    register = memory.allocate_register()
+    register = Register.allocate()
     move_unknown_to_register(line_segments[1], register)
     memory.move_register_to_address(register, port.value)
-    memory.free_register(register)
+    Register.free(register)
 
 
 def deal_with_input(line_segments: List[str]) -> None:
@@ -24,10 +25,10 @@ def deal_with_input(line_segments: List[str]) -> None:
 
     variable: Variable = active_variables[line_segments[1]]
 
-    register = memory.allocate_register()
+    register = Register.allocate()
     memory.move_address_to_register(port.value, register)
     memory.move_register_to_address(register, variable.memory_address)
-    memory.free_register(register)
+    Register.free(register)
 
 
 def deal_with_negate(line_segments: List[str]) -> None:
@@ -51,7 +52,7 @@ def deal_with_variable_init(line_segments: List[str]) -> None:
     Variable(variable_name)
     variable = active_variables[variable_name]
 
-    set_variable_value(line_segments[1::], variable)
+    set_variable_value(line_segments[1:], variable)
 
 
 def deal_with_free_variable(line_segments: List[str]) -> None:
@@ -71,14 +72,14 @@ def set_variable_value(value_expression: List[str], variable: Variable) -> None:
         other_variable.undo_reference()
         return
 
-    register = memory.allocate_register()
+    register = Register.allocate()
 
     with ExpressionLoader(value_expression) as expression_loader:
         deal_with_modifier(value_expression[1], register, *expression_loader.registers)
 
     memory.move_register_to_address(register, variable.memory_address)
 
-    memory.free_register(register)
+    Register.free(register)
 
 
 def deal_with_modifier(modifier: str, value_register: int, register0: int, register1: int) -> None:

@@ -31,69 +31,47 @@ class Port(Enum):
 
 
 class Register:
-    free_registers = list(range(15, 0, -1))  # regs 15, 14, 13 .. 1
+    available_registers = list(range(15, 0, -1))  # regs 15, 14, 13 .. 1
 
     @staticmethod
     def allocate() -> int:
-        register = Register.free_registers.pop()
+        register = Register.available_registers.pop()
         return register
 
     @staticmethod
     def free(register: int) -> None:
-        Register.free_registers.append(register)
+        Register.available_registers.append(register)
 
 
 class Memory:
-    free_addresses = list(range(239, -1, -1))  # addresses 239, 238 .. 0
+    available_addresses = list(range(239, -1, -1))  # addresses 239, 238 .. 0
 
     @staticmethod
-    def allocate_memory() -> int:
-        free_memory_address = Memory.free_addresses.pop()
-        return free_memory_address
+    def allocate() -> int:
+        memory_address = Memory.available_addresses.pop()
+        return memory_address
 
     @staticmethod
     def free(address: int) -> None:
-        Memory.free_addresses.append(address)
-
-
-free_registers = list(range(15, 0, -1))  # regs 15, 14, 13 .. 1
-free_memory_list = list(range(239, -1, -1))  # addresses 239, 238 .. 0
-
-
-def allocate_register() -> int:
-    register = free_registers.pop()
-    return register
-
-
-def free_register(register: int) -> None:
-    free_registers.append(register)
-
-
-def allocate_memory() -> int:
-    free_memory_address = free_memory_list.pop()
-    return free_memory_address
-
-
-def free_memory(address: int) -> None:
-    free_memory_list.append(address)
+        Memory.available_addresses.append(address)
 
 
 def move_register_to_address(value_register: int, address: int) -> None:
-    address_register = allocate_register()
+    address_register = Register.allocate()
     set_register_immediate(address_register, address)
 
     text = f"STR r{address_register} r{value_register}"
-    free_register(address_register)
+    Register.free(address_register)
     file_io.append_to_out(text)
 
 
 def move_address_to_register(address: int, register: int) -> None:
-    address_register = allocate_register()
+    address_register = Register.allocate()
     set_register_immediate(address_register, address)
 
     text = f"LOD r{address_register} r{register}"
 
-    free_register(address_register)
+    Register.free(address_register)
 
     file_io.append_to_out(text)
 
