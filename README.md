@@ -1,4 +1,4 @@
-# Bat-ssembler
+# Bat-piler
 
 A little compiler written in python that translates a simple language into the Bat asm for minecraft.
 
