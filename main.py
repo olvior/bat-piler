@@ -107,17 +107,6 @@ def deal_with_if(args, line_number):
         mh.free_register(r)
 
 
-MODIFIERS_DICT = {
-    '+': deal_with_plus, 
-    '-': deal_with_minus,
-    'NOR': deal_with_nor,
-    'AND': deal_with_and,
-    '&&': deal_with_and,
-    'XOR': deal_with_xor,
-    '^': deal_with_xor,
-}
-
-
 def deal_with_output(args):
     port = args[1]
 
@@ -198,6 +187,16 @@ COMPARISON_DICT = {
     "!=": "1",
     ">=": "2",
     "<": "3",
+}
+
+MODIFIERS_DICT = {
+    '+': deal_with_plus, 
+    '-': deal_with_minus,
+    'NOR': deal_with_nor,
+    'AND': deal_with_and,
+    '&&': deal_with_and,
+    'XOR': deal_with_xor,
+    '^': deal_with_xor,
 }
 
 KEYWORD_LIST = {
