@@ -43,3 +43,6 @@ dmypy.json
 
 # compiled into assembly
 *.as
+
+# assembly backup
+*.mc
