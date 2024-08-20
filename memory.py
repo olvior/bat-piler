@@ -1,25 +1,25 @@
-from enum import Enum
+from enum import Enum, auto
 
 import file_io
 
 
 class Port(Enum):
     SCREEN_SET_PIXEL_X = 240
-    SCREEN_SET_PIXEL_Y = 241
-    SCREEN_DRAW_PIXEL = 242
-    SCREEN_CLEAR_PIXEL = 243
-    SCREEN_LOAD_PIXEL = 244
-    SCREEN_PUSH = 245
-    SCREEN_CLEAR = 246
-    CHAR_WRITE = 247
-    CHAR_PUSH = 248
-    CHAR_CLEAR = 249
-    NUMBER_SHOW = 250
-    NUMBER_CLEAR = 251
-    NUMBER_SET_SIGNED = 252
-    NUMBER_SET_UNSIGNED = 253
-    LOAD_RNG = 254
-    LOAD_CONTROLLER = 255
+    SCREEN_SET_PIXEL_Y = auto()
+    SCREEN_DRAW_PIXEL = auto()
+    SCREEN_CLEAR_PIXEL = auto()
+    SCREEN_LOAD_PIXEL = auto()
+    SCREEN_PUSH = auto()
+    SCREEN_CLEAR = auto()
+    CHAR_WRITE = auto()
+    CHAR_PUSH = auto()
+    CHAR_CLEAR = auto()
+    NUMBER_SHOW = auto()
+    NUMBER_CLEAR = auto()
+    NUMBER_SET_SIGNED = auto()
+    NUMBER_SET_UNSIGNED = auto()
+    LOAD_RNG = auto()
+    LOAD_CONTROLLER = auto()
 
     @staticmethod
     def get_port(name: str) -> "Port":
