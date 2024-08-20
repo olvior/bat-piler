@@ -177,6 +177,12 @@ def negate(args):
     mh.move_reg_to_addr(var.register, var.memory_addr)
     var.undo_reference()
 
+def append_halt(args):
+    global halted
+
+    fio.append_to_out("HLT")
+    halted = True
+
 COMPARISON_DICT = {
     "==": "0",
     "!=": "1",
@@ -188,6 +194,8 @@ KEYWORD_LIST = {
     "set": deal_with_set,
     "var": deal_with_var,
     "free": free_variable,
+    "halt": append_halt,
+    "HLT": append_halt,
 }
 
 INBUILT_FUNCTIONS = {
@@ -220,8 +228,6 @@ def main():
 
 
 def interpret_line(line, line_number):
-    global halted
-
     line = line.strip()
     line_by_spaces = line.split()
 
@@ -258,9 +264,6 @@ def interpret_line(line, line_number):
     elif start == "return":
         fio.append_to_out("RET")
 
-    elif start == "HLT" or start == "halt":
-        fio.append_to_out("HLT")
-        halted = True
 
 
 
