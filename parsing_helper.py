@@ -8,7 +8,7 @@ class Exp(Enum):
     IF_KEY_WORD = 4
 
 
-MODIFIERS = ['+', '-']
+MODIFIERS = ['+', '-', 'NOR', 'AND', '&&', 'XOR', '^', "RSH"]
 COMPARISONS = ['==', '!=', '>=', '<']
 IF_KEY_WORDS = ["if", "endif"]
 
