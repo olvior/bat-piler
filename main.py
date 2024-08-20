@@ -225,7 +225,10 @@ def interpret_line(line, line_number):
     line = line.strip()
     line_by_spaces = line.split()
 
-    if line[0:2] == "//":
+    if len(line_by_spaces) == 0:
+        return
+
+    if line[0] == "/":
         # we can skip the comment
         return
 
