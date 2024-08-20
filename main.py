@@ -186,6 +186,10 @@ def append_halt(args):
 def append_return(args):
     fio.append_to_out("RET")
 
+def append_goto(args):
+    fio.append_to_out(f"JMP {args[1]}")
+
+
 COMPARISON_DICT = {
     "==": "0",
     "!=": "1",
@@ -200,6 +204,7 @@ KEYWORD_LIST = {
     "halt": append_halt,
     "HLT": append_halt,
     "return": append_return,
+    "goto": append_goto,
 }
 
 INBUILT_FUNCTIONS = {
@@ -258,9 +263,6 @@ def interpret_line(line, line_number):
 
     elif start[0] == ".":
         fio.append_to_out(line)
-
-    elif start == "goto":
-        fio.append_to_out(f"JMP {line_by_spaces[1]}")
 
     elif start == "call":
         fio.append_to_out(f"CAL {line_by_spaces[1]}")
