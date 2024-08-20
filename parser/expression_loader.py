@@ -1,7 +1,7 @@
 from typing import List
 
 import memory
-from parser_stuff.parser_utils import move_unknown_to_register
+from parser.parser_utils import move_unknown_to_register
 
 
 class ExpressionLoader:

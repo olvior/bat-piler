@@ -3,8 +3,8 @@ from typing import List, Dict, Callable
 import file_io
 import memory
 from exceptions import InternalCompilerError
-from parser_stuff.expression_loader import ExpressionLoader
-from parser_stuff.parser_utils import move_unknown_to_register, is_immediate
+from parser.expression_loader import ExpressionLoader
+from parser.parser_utils import move_unknown_to_register, is_immediate
 from variable import active_variables, Variable
 
 

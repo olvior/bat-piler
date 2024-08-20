@@ -2,7 +2,7 @@ import sys
 from dataclasses import dataclass
 
 import file_io
-from parser_stuff.inbuilt_functions import deal_with_inbuilt_function, deal_with_if
+from parser.inbuilt_functions import deal_with_inbuilt_function, deal_with_if
 
 
 @dataclass
