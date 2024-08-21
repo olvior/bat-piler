@@ -15,16 +15,10 @@ class Variable:
         self.memory_address = RAM.allocate() if address is None else address
         active_variables[self.name] = self
 
-    def set_value_immediate(self, value: int) -> None:
-        self.register = Register.allocate()
-        memory_utils.set_register_immediate(self.register, value)
-        memory_utils.move_register_to_address(self.register, self.memory_address)
-        Register.free(self.register)
-        self.register = None
-
-    def reference(self) -> None:
+    def reference(self) -> int:
         self.register = register.Register.allocate()
         memory_utils.move_address_to_register(self.memory_address, self.register)
+        return self.register
 
     def undo_reference(self) -> None:
         if self.register is not None:

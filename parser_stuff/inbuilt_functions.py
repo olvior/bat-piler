@@ -46,9 +46,9 @@ def deal_with_input(line_segments: List[str]) -> None:
 
 def deal_with_negate(line_segments: List[str]) -> None:
     variable: Variable = active_variables[line_segments[0]]
-    variable.reference()
-    file_io.append_to_out(f"SUB r0 r{variable.register} r{variable.register}")
-    memory_utils.move_register_to_address(variable.register, variable.memory_address)
+    register = variable.reference()
+    file_io.append_to_out(f"SUB r0 r{register} r{register}")
+    memory_utils.move_register_to_address(register, variable.memory_address)
     variable.undo_reference()
 
 
