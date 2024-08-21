@@ -10,18 +10,18 @@ In the language you work with variables
 
 They are assigned like this:
 ```hb
-var my_variable_name 24
+var my_variable_name = 24
 ```
 
 The only type is an integer
 
 You can then change the value of a variable like so:
 ```hb
-var player_y 0
-var player_velocity_y 6
+var player_y = 0
+var player_velocity_y = 6
 
-set player_velocity_y 20
-set player_y player_y + player_velocity_y
+set player_velocity_y = 20
+set player_y = player_y + player_velocity_y
 ```
 
 You can either assign a variable to a literal, a variable, or to an expression with two literals/variables on either side of an operator.
@@ -38,7 +38,7 @@ The included ones are:
 You can declare an if statement like so:
 ```hb
 if is_touching_groud == 1
-    set player_y ground_y
+    set player_y = ground_y
 endif
 ```
 
@@ -50,7 +50,7 @@ Proper loops such as for and while are not yet supported, but you can make a loo
 ```hb
 // define an address
 .loop_start
-    set counter counter + 1
+    set counter = counter + 1
     ... do stuff
     
     if counter < 10
@@ -73,13 +73,17 @@ halt
 
 ## IO
 
-Store to a port like so:
+Store to a port like so (default value is 0):
 
 ```hb
-output SHOW_NUMBER 10
+output SCREEN_SET_PIXEL_X 240
+output SCREEN_SET_PIXEL_Y 240
+output SCREEN_DRAW_PIXEL
+output SCREEN_PUSH
 ```
 
 Load like so:
+
 ```hb
 input LOAD_RNG my_random_variable
 ```
