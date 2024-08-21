@@ -23,6 +23,8 @@ def deal_with_simple(method: str, value: str) -> None:
 
 
 def deal_with_output(line_segments: List[str]) -> None:
+    if len(line_segments) < 2:
+        line_segments.append("0")
     port_name = line_segments[0]
     port = Port.get_port(port_name)
 
@@ -56,6 +58,8 @@ def deal_with_set(line_segments: List[str]) -> None:
     variable_name = line_segments[0]
     variable = active_variables[variable_name]
 
+    if line_segments[1] == "=":
+        line_segments.pop(1)
     set_variable_value(line_segments[1:], variable)
 
 
@@ -65,6 +69,8 @@ def deal_with_variable_init(line_segments: List[str]) -> None:
     Variable(variable_name)
     variable = active_variables[variable_name]
 
+    if line_segments[1] == "=":
+        line_segments.pop(1)
     set_variable_value(line_segments[1:], variable)
 
 

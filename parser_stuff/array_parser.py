@@ -1,4 +1,4 @@
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Tuple
 
 from memory import memory_utils
 from memory.register import Register
@@ -7,21 +7,28 @@ from models.variable import active_variables
 from parser_stuff.parser_utils import move_real_unknown_to_register, move_unknown_to_register
 
 
-def deal_with_new(name: str, arguments: List[str]):
-    if len(arguments) != 1:
-        raise ValueError("Wrong number of arguments")
+def deconstruct_name_segment(name_segment: str) -> Tuple[str, str]:
+    return name_segment[:name_segment.find("[")], name_segment[name_segment.find("[") + 1:name_segment.find("]")]
+
+
+def calculate_index(register: int, index: str, array_address: int) -> None:
+    move_unknown_to_register(index, register)
+    memory_utils.add_register_immediate(register, array_address)
+
+
+def deal_with_new(name_segment: str):
+    name, size_segment = deconstruct_name_segment(name_segment)
+
     if name in active_arrays:
         raise ValueError("Duplicate name")
     try:
-        size = int(arguments[0])
+        size = int(size_segment)
     except ValueError:
         raise ValueError("Size must be an integer")
     Array(name, size)
 
 
-def deal_with_free(name: str, arguments: List[str]):
-    if len(arguments) != 0:
-        raise ValueError("Wrong number of arguments")
+def deal_with_free(name: str):
     try:
         array = active_arrays[name]
     except KeyError as e:
@@ -29,48 +36,51 @@ def deal_with_free(name: str, arguments: List[str]):
     array.free()
 
 
-def deal_with_set(name: str, arguments: List[str]):
+def deal_with_set(name_segment: str, arguments: List[str]):
+    name, index = deconstruct_name_segment(name_segment)
     array = active_arrays[name]
 
     index_register = Register.allocate()
-    move_unknown_to_register(arguments[0], index_register)
-    memory_utils.add_register_immediate(index_register, array.address)
-
     value_register = Register.allocate()
-    move_real_unknown_to_register(arguments[1:], value_register)
+    calculate_index(index_register, index, array.address)
+    move_real_unknown_to_register(arguments, value_register)
     memory_utils.move_register_to_address_register(value_register, index_register)
     Register.free(index_register)
     Register.free(value_register)
 
 
-def deal_with_get(name: str, arguments: List[str]):
+def deal_with_get(name_segment: str, arguments: List[str]):
+    name, index = deconstruct_name_segment(name_segment)
     array = active_arrays[name]
 
     index_register = Register.allocate()
-    move_unknown_to_register(arguments[0], index_register)
-    memory_utils.add_register_immediate(index_register, array.address)
+    calculate_index(index_register, index, array.address)
 
     value_register = Register.allocate()
     memory_utils.move_register_address_to_register(value_register, index_register)
     Register.free(index_register)
 
-    variable = active_variables[arguments[1]]
+    variable = active_variables[arguments[0]]
     memory_utils.move_register_to_address(value_register, variable.memory_address)
     Register.free(value_register)
 
 
-METHODS: Dict[str, Callable[[str, List[str]], None]] = {
+MANAGEMENT_METHODS: Dict[str, Callable[[str], None]] = {
     "new": deal_with_new,
     "free": deal_with_free,
-    "set": deal_with_set,
-    "get": deal_with_get,
+}
+
+VALUE_METHODS: Dict[str, Callable[[str, List[str]], None]] = {
+    "=": deal_with_set,
+    "->": deal_with_get,
 }
 
 
 def deal_with_array(line_segments: List[str]) -> None:
-    name, method_name, *arguments = line_segments
     try:
-        method = METHODS[method_name]
-    except KeyError as e:
-        raise KeyError(f"Array method {method_name} does not exist") from e
-    method(name, arguments)
+        method = MANAGEMENT_METHODS[line_segments[0]]
+    except KeyError:
+        method = VALUE_METHODS[line_segments[1]]
+        method(line_segments[0], line_segments[2:])
+        return
+    method(line_segments[1])
