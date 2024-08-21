@@ -20,6 +20,7 @@ def read_lines_from_input() -> List[str]:
 
     new_lines = []
     for line in lines:
+        line = line.strip()
         if line:
             new_lines.append(line)
 

@@ -38,7 +38,6 @@ def main() -> None:
 
 
 def interpret_line(compiler_metadata: CompilerMetadata, line: str, line_number: int) -> None:
-    line = line.strip()
     if line.startswith("//"):
         # we can skip the comment
         return
