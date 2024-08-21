@@ -2,6 +2,7 @@ import sys
 from dataclasses import dataclass
 
 import file_io
+from exceptions import InternalCompilerError
 from parser_stuff.inbuilt_functions import deal_with_inbuilt_function, deal_with_if
 
 
@@ -50,6 +51,9 @@ def interpret_line(compiler_metadata: CompilerMetadata, line: str, line_number: 
         return
     except KeyError:
         pass
+    except InternalCompilerError:
+        print(f"current line: {line}")
+        raise
 
     if start == "if":
         deal_with_if(line_segments, line_number, compiler_metadata.if_stack)
