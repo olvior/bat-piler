@@ -16,15 +16,14 @@ def read_all_from_in() -> str:
 
 def read_lines_from_input() -> List[str]:
     with open(in_file_path, 'r') as f:
-        lines = f.read().strip().split('\n')
+        data = f.read()
+    lines = data.split('\n')
 
-    new_lines = []
-    for line in lines:
-        line = line.strip()
-        if line:
-            new_lines.append(line)
-
-    return new_lines
+    return [
+        line.strip()
+        for line in lines
+        if line.strip()
+    ]
 
 
 def append_to_out(text: str) -> None:
