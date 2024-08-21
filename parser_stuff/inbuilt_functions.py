@@ -9,6 +9,18 @@ from parser_stuff.parser_utils import move_unknown_to_register, is_immediate
 from variable import active_variables, Variable
 
 
+def deal_with_jump(line_segments: List[str]) -> None:
+    deal_with_simple("JMP", line_segments[0])
+
+
+def deal_with_call(line_segments: List[str]) -> None:
+    deal_with_simple("CAL", line_segments[0])
+
+
+def deal_with_simple(method: str, value: str) -> None:
+    file_io.append_to_out(f"{method} {value}")
+
+
 def deal_with_output(line_segments: List[str]) -> None:
     port_name = line_segments[0]
     port = Port.get_port(port_name)
@@ -135,6 +147,9 @@ def deal_with_inbuilt_function(start: str, line_segments: List[str]) -> None:
 
 
 INBUILT_FUNCTIONS: Dict[str, Callable[[List[str]], None]] = {
+    "goto": deal_with_jump,
+    "jump": deal_with_jump,
+    "call": deal_with_call,
     "output": deal_with_output,
     "input": deal_with_input,
     "negate": deal_with_negate,

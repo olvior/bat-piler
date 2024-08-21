@@ -63,12 +63,6 @@ def interpret_line(compiler_metadata: CompilerMetadata, line: str, line_number: 
     elif start[0] == ".":
         file_io.append_to_out(line)
 
-    elif start == "goto":
-        file_io.append_to_out(f"JMP {line_segments[0]}")
-
-    elif start == "call":
-        file_io.append_to_out(f"CAL {line_segments[0]}")
-
     elif start == "return":
         file_io.append_to_out("RET")
 
