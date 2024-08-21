@@ -1,0 +1,2 @@
+class InternalCompilerError(Exception):
+    pass

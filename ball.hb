@@ -25,7 +25,7 @@ var was_w 0
 .main
 	call .clear
 
-	input LOAD_CONTROLER input_var
+	input LOAD_CONTROLLER input_var
 	set was_a is_a
 	set is_a input_var && 1
 
