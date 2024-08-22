@@ -29,7 +29,7 @@ def deal_with_output(line_segments: List[str]) -> None:
     port = Port.get_port(port_name)
 
     register = Register.allocate()
-    move_real_unknown_to_register(line_segments[1], register)
+    move_real_unknown_to_register(line_segments[1:], register)
     memory_utils.move_register_to_address(register, port.value)
     Register.free(register)
 
