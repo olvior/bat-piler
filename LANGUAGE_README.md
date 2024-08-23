@@ -24,7 +24,7 @@ set player_velocity_y = 20
 set player_y = player_y + player_velocity_y
 ```
 
-You can either assign a variable to a literal, a variable, or to an expression with two literals/variables on either side of an operator.
+You can either assign a variable to a literal, a variable, or to an expression (more details about those below).
 
 The included ones are:
 1. +, addition
@@ -32,6 +32,16 @@ The included ones are:
 3. AND/&&, bitwise and
 4. XOR/^ bitwise xor
 5. NOR, bitwise nor
+
+## Expressions
+
+Expressions can now be of an arbitrary length, however they are always evaluated from right to left.
+
+```hb
+var player_y = other_variable + velocity + 4 - friction
+```
+
+Is perfectly valid, but the use of parentheses will just break the compiler and not change the order of operations.
 
 ## Conditionals
 
