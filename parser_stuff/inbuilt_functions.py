@@ -7,7 +7,7 @@ from memory.port import Port
 from memory.register import Register
 from models.variable import active_variables, Variable
 from parser_stuff.array_parser import deal_with_array
-from parser_stuff.parser_utils import ExpressionLoader, move_unknown_to_register, set_variable_value
+from parser_stuff.parser_utils import ExpressionLoader, move_unknown_to_register, set_variable_value, move_real_unknown_to_register
 
 
 def deal_with_jump(line_segments: List[str]) -> None:
@@ -29,7 +29,7 @@ def deal_with_output(line_segments: List[str]) -> None:
     port = Port.get_port(port_name)
 
     register = Register.allocate()
-    move_unknown_to_register(line_segments[1], register)
+    move_real_unknown_to_register(line_segments[1:], register)
     memory_utils.move_register_to_address(register, port.value)
     Register.free(register)
 
