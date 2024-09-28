@@ -42,3 +42,4 @@ class RAM:
             last_address = address
 
         raise ValueError(f"Failed to allocate {amount} consecutive addresses")
+

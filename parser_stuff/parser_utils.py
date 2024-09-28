@@ -44,7 +44,7 @@ def move_expression_to_register(expression: List[str], register: int) -> None:
         deal_with_modifier(next_modifier, register, register, right_hand_register)
         Register.free(right_hand_register)
 
-    print(expression)
+    #print(expression)
 
 
 def is_immediate(string: str) -> bool:
@@ -68,6 +68,8 @@ def deal_with_modifier(modifier: str, value_register: int, register0: int, regis
     except KeyError:
         print(f"modifier {modifier} is not supported")
         raise KeyError
+
+    Register.mark_register_as_unknown(value_register)
     file_io.append_to_out(f"{modifier_keyword} r{register0} r{register1} r{value_register}")
 
 

@@ -9,7 +9,6 @@ from models.variable import active_variables, Variable
 from parser_stuff.array_parser import deal_with_array
 from parser_stuff.parser_utils import ExpressionLoader, move_unknown_to_register, set_variable_value, move_real_unknown_to_register
 
-
 def deal_with_jump(line_segments: List[str]) -> None:
     deal_with_simple("JMP", line_segments[0])
 
