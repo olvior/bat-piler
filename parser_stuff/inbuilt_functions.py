@@ -27,10 +27,16 @@ def deal_with_output(line_segments: List[str]) -> None:
     port_name = line_segments[0]
     port = Port.get_port(port_name)
 
-    register = Register.allocate()
-    move_real_unknown_to_register(line_segments[1:], register)
-    memory_utils.move_register_to_address(register, port.value)
-    Register.free(register)
+    if Port.output_value_matters(port):
+        register = Register.allocate()
+        move_real_unknown_to_register(line_segments[1:], register)
+        memory_utils.move_register_to_address(register, port.value)
+        Register.free(register)
+
+    else:
+        memory_utils.move_register_to_address(0, port.value)
+
+
 
 
 def deal_with_input(line_segments: List[str]) -> None:
