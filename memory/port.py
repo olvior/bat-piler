@@ -26,3 +26,25 @@ class Port(Enum):
         except KeyError:
             print(f"Port {name} not found")
             raise KeyError
+
+    @staticmethod
+    def output_value_matters(port) -> bool:
+        return not (port in output_value_useless_ports)
+
+output_value_useless_ports = [
+    Port.SCREEN_DRAW_PIXEL,
+    Port.SCREEN_CLEAR_PIXEL,
+    Port.SCREEN_LOAD_PIXEL,
+    Port.SCREEN_PUSH,
+    Port.SCREEN_CLEAR,
+
+    Port.CHAR_PUSH,
+    Port.CHAR_CLEAR,
+
+    Port.NUMBER_CLEAR,
+    Port.NUMBER_SET_SIGNED,
+    Port.NUMBER_SET_UNSIGNED,
+
+    Port.LOAD_RNG,
+    Port.LOAD_CONTROLLER,
+]

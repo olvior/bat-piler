@@ -9,7 +9,6 @@ from models.variable import active_variables, Variable
 from parser_stuff.array_parser import deal_with_array
 from parser_stuff.parser_utils import ExpressionLoader, move_unknown_to_register, set_variable_value, move_real_unknown_to_register
 
-
 def deal_with_jump(line_segments: List[str]) -> None:
     deal_with_simple("JMP", line_segments[0])
 
@@ -28,10 +27,16 @@ def deal_with_output(line_segments: List[str]) -> None:
     port_name = line_segments[0]
     port = Port.get_port(port_name)
 
-    register = Register.allocate()
-    move_real_unknown_to_register(line_segments[1:], register)
-    memory_utils.move_register_to_address(register, port.value)
-    Register.free(register)
+    if Port.output_value_matters(port):
+        register = Register.allocate()
+        move_real_unknown_to_register(line_segments[1:], register)
+        memory_utils.move_register_to_address(register, port.value)
+        Register.free(register)
+
+    else:
+        memory_utils.move_register_to_address(0, port.value)
+
+
 
 
 def deal_with_input(line_segments: List[str]) -> None:
